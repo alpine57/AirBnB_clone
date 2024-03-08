@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-
+"""file storage of the program"""
 from models.engine.file_storage import FileStorage
 
 storage = FileStorage()

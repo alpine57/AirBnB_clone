@@ -148,11 +148,11 @@ class HBNBCommand(cmd.Cmd):
         attribute_value = args[3]
 
         try:
-            # Casting attribute value to the attribute type
+            """Casting attribute value to the attribute type"""
             attribute_type = type(getattr(instance, attribute_name))
             casted_value = attribute_type(attribute_value)
 
-            # Updating the attribute
+            """Updating the attribute"""
             setattr(instance, attribute_name, casted_value)
             instance.save()
         except Exception as e:
