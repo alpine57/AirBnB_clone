@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 
 import json
-from os import path
-
+from os.path import exists
 
 class FileStorage:
     __file_path = "file.json"
@@ -30,3 +29,4 @@ class FileStorage:
                     class_name, obj_id = key.split('.')
                     obj_instance = eval(class_name)(**value)
                     self.__objects[key] = obj_instance
+
