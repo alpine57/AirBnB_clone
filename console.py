@@ -126,6 +126,20 @@ class HBNBCommand(cmd.Cmd):
         count = len(storage.all(class_name))
         print(count)
 
+    def do_all_instances(self, arg):
+        """Prints all instances of a class"""
+        if not arg:
+            print("** class name missing **")
+            return
+
+        class_name = arg.split()[0]
+        if class_name not in self.valid_classes:
+            print("** class doesn't exist **")
+            return
+
+        objs = storage.all(class_name)
+        print([str(obj) for obj in objs.values()])
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
 
