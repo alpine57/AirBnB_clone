@@ -2,9 +2,11 @@
 import cmd
 from models import storage
 from models.base_model import BaseModel
+from models.user import User  # Import the User class
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
+    valid_classes = ["BaseModel", "User"]  # Include User class in valid classes
 
     def do_quit(self, arg):
         """Exit the program"""
@@ -72,14 +74,16 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """Prints all instances"""
         args = arg.split()
-        if args:
-            class_name = args[0]
-            if class_name not in storage.all().keys():
-                print("** class doesn't exist **")
-                return
-            objs = storage.all()[class_name]
-        else:
-            objs = storage.all()
+        if not args:
+            print("** class name missing **")
+            return
+
+        class_name = args[0]
+        if class_name not in self.valid_classes:
+            print("** class doesn't exist **")
+            return
+
+        objs = storage.all(class_name)
         print([str(obj) for obj in objs.values()])
 
     def do_update(self, arg):
@@ -107,6 +111,20 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
         except Exception as e:
             print("**", e)
+
+    def do_count(self, arg):
+        """Counts the number of instances of a class"""
+        if not arg:
+            print("** class name missing **")
+            return
+
+        class_name = arg.split()[0]
+        if class_name not in self.valid_classes:
+            print("** class doesn't exist **")
+            return
+
+        count = len(storage.all(class_name))
+        print(count)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
