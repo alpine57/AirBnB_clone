@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 
-from datetime import datetime, timezone
+from datetime import datetime
 import uuid
-
-
+import models
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
@@ -13,6 +12,7 @@ class BaseModel:
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
+            models.storage.new(self)  # Add new instance to storage
 
     def __set_attributes(self, attributes):
         """Set instance attributes from dictionary."""
@@ -29,8 +29,9 @@ class BaseModel:
         self.__dict__.update(attributes)
 
     def save(self):
-        """Update updated_at attribute with current datetime."""
+        """Update updated_at attribute with current datetime and save to file."""
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """Return a dictionary representation of the instance."""
@@ -45,4 +46,3 @@ class BaseModel:
         return "[{}] ({}) {}".format(
             self.__class__.__name__, self.id, self.__dict__
         )
-
